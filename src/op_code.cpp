@@ -1,5 +1,5 @@
 #include "op_code.h"
-// #include "cpu.h"
+#include "bus.h"
 #include <iostream> 
 
 void CPU::op_lui(INSTRUCTION inst) {
@@ -45,9 +45,8 @@ void CPU::op_j(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": jump inst" << std::endl;
 	uint32_t j = inst.get_j_address();
 	std::cout << "jumping to address " << std::hex << "0x" << j << std::endl;
-	r_pc = r_pc & 0xF0000000 | (j << 2);
+	r_pc = (r_pc & 0xF0000000) | (j << 2);
 }
-
 
 void CPU::op_or(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": jump inst" << std::endl;
@@ -57,11 +56,9 @@ void CPU::op_or(INSTRUCTION inst) {
 	regs[d] = regs[s] | regs[t];
 }
 
-
 void CPU::op_cop0(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": op COP_0" << std::endl;
 	bool op_code_handled = true;
-
 	uint32_t cop_op = inst.get_s();
 
 	switch (cop_op) {
@@ -75,6 +72,7 @@ void CPU::op_cop0(INSTRUCTION inst) {
 		break;
 	}
 }
+
 void CPU::op_cop_mtc0(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": jump inst" << std::endl;
 

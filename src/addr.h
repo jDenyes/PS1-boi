@@ -1,10 +1,6 @@
 #pragma once
 
-#ifndef ADDR_H
-#define ADDR_H
-
 #include <stdint.h>
-#include "bus.h"
 
 class BUS;
 
@@ -24,5 +20,3 @@ public:
 	char *data;
 	BUS * m_bus;
 };
-
-#endif

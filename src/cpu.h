@@ -1,7 +1,9 @@
 #pragma once
 
 #include <stdint.h>
-#include "bus.h"
+// #include "bus.h"
+
+class BUS;
 
 #define RESET_PC_VAL 0xbfc00000
 

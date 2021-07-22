@@ -50,12 +50,12 @@ BIOS::BIOS(const std::string &path, BUS * bus) : MEM_SPACE(BIOS_START_ADDRESS, B
 
 // load 32-bit value from BIOS Image
 uint32_t BIOS::load32(uint32_t offset) {
-	// uint32_t ld_val{0};
+	uint32_t ld_val{0};
 	// // std::cout << "Bios Image at offset: 0x" << std::hex << offset << std::endl;
 	// for (uint32_t i = 0; i < sizeof(uint32_t) / sizeof(char); i++) {
 	// 	// std::cout << "\t" << std::hex << ((int)m_bios_image[offset + i] & 0xFF) << std::endl;
 	// 	ld_val |= (m_bios_image[offset + i] & 0xFF) << (i * 8);
 	// }
 	// std::cout << "load32 val: 0x" << std::hex << ld_val << std::endl;
-	// return ld_val;
+	return ld_val;
 }
