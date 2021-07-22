@@ -52,6 +52,12 @@ void CPU::decode_and_execute(INSTRUCTION inst) {
 		case J:
 			op_j(inst);
 			break;
+		case BNE:
+			op_bne(inst);
+			break;
+		case ADDI:
+			op_addi(inst);
+			break;
 		case ADDIU:
 			op_addiu(inst);
 			break;
@@ -79,6 +85,13 @@ void CPU::decode_and_execute(INSTRUCTION inst) {
 	if (op_code_handled) {
 		print_regs();
 	}
+}
+
+void CPU::branch(int32_t offset) {
+	offset = offset << 2;
+
+	r_pc += offset;
+	r_pc -= 4;
 }
 
 void CPU::print_pc() {

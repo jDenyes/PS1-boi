@@ -39,7 +39,7 @@ private:
 	void reset_pc();
 	void decode_and_execute(INSTRUCTION inst);
 	uint32_t load32(uint32_t address);
-	
+	void branch(int32_t offset);
 	void print_regs();
 	
 	uint32_t r_pc;
@@ -52,6 +52,8 @@ private:
 
 	// CPU Operations
 	void op_j(INSTRUCTION inst);
+	void op_bne(INSTRUCTION inst);
+	void op_addi(INSTRUCTION inst);
 	void op_addiu(INSTRUCTION inst);
 	void op_ori(INSTRUCTION inst);
 	void op_lui(INSTRUCTION inst);

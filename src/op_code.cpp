@@ -48,9 +48,20 @@ void CPU::op_sll(INSTRUCTION inst) {
 	regs[d] = regs[t] << i;
 }
 
+void CPU::op_addi(INSTRUCTION inst) {
+	std::cout << "0x" << std::hex << inst.get_op() << ": addi inst" << std::endl;
+	int32_t i = inst.get_se_i();
+	uint32_t t = inst.get_t();
+	uint32_t s = inst.get_s();
+
+	s = (int32_t)regs[s];
+
+	regs[t] = uint32_t(regs[s] + i);
+}
+
 void CPU::op_addiu(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": addiu inst" << std::endl;
-	uint32_t i = inst.get_se_i();
+	int32_t i = inst.get_se_i();
 	uint32_t t = inst.get_t();
 	uint32_t s = inst.get_s();
 	regs[t] = regs[s] + i;
@@ -105,4 +116,15 @@ void CPU::op_cop_mtc0(INSTRUCTION inst) {
 	}
 }
 
-
+void CPU::op_bne(INSTRUCTION inst) {
+	std::cout << "0x" << std::hex << inst.get_op() << ": bne inst" << std::endl;
+	int32_t i = inst.get_se_i();
+	uint32_t s = inst.get_s();
+	uint32_t t = inst.get_t();
+	
+	std::cout << "compariing " << s << " and " << t << " for equality" << std::endl;
+	if (regs[s] != regs[t]) {
+		std::cout << "Adding offset " << std::dec << i << std::endl;
+		branch(i);
+	}
+}
