@@ -3,51 +3,72 @@
 #include "addr.h"
 
 #include <iostream>
+#include <iterator>
 
-BUS::BUS() { // : mem_control(0x1f801000, 36), ram(0x1f801060, 4), cache_control(0xfffe0130, 4) {
+bool is_address_word_aligned(uint32_t address);
+
+BUS::BUS() {
+	std::cout << "Initializing BUS\n" << std::endl;
+
 	m_bios 			= new BIOS(this);
-	mem_control 	= new MEM_SPACE(MEMORY_CONTROLLER_START_ADDRESS	, MEMORY_CONTROLLER_SIZE, this);
-	ram_control 	= new MEM_SPACE(RAM_CTRL_START_ADDRESS			, DWORD_SIZE, this);
-	cache_control 	= new MEM_SPACE(CACHE_CTRL_START_ADDRESS		, DWORD_SIZE, this);
+	mem_control 	= new MEM_SPACE("MEM_CONTROLLER"	, MEMORY_CONTROLLER_START_ADDRESS	, MEMORY_CONTROLLER_SIZE, this);
+	ram_control 	= new MEM_SPACE("RAM_CONTROLLER"	, RAM_CTRL_START_ADDRESS			, DWORD_SIZE			, this);
+	cache_control 	= new MEM_SPACE("CACHE_CONTROLLER"	, CACHE_CTRL_START_ADDRESS			, DWORD_SIZE			, this);
 
-
-	// BIOS * mem_bios = new BIOS;
-
-	// mem_map.insert(&mem_control);
-	// mem_map.insert(&ram);
-	// mem_map.insert(&cache_control);
-	// mem_map.insert(&mem_bios);
-
-	std::cout << "Initializing BUS" << std::endl;
-	// m_bios = new BIOS;
+	std::cout << "\nBUS Initialization complete" << std::endl;
 }
 
 uint32_t BUS::load32(uint32_t address) {
-	uint32_t offset = m_bios->ar.local_address_offset(address);
+	uint32_t ld_val{0};
 
-	if (address % 4 != 0) {
+	// ensure address is word aligned
+	if (!is_address_word_aligned(address)) {
 		std::cout << "address 0x" << std::hex << address << " is not word aligned" << std::endl;
 		exit(-1);
 	}
 
-	if (offset != 0xFFFFFFFF) { //  is it possible for the offset to be 0xFFFFFFF?
-		return m_bios->load32(offset);
-	} else {
+	// loop through address mem spaces to determine which address space to write to
+	bool address_space_found{false};
+	std::set<MEM_SPACE *>::iterator m_iter;
+	for (m_iter = mem_map.begin(); m_iter != mem_map.end(); m_iter ++) {
+		MEM_SPACE * memory_space = *m_iter;
+		if (memory_space->ar.is_addressable(address)) {
+			ld_val = memory_space->load32(address);
+			address_space_found = true;
+			break;
+		}
+	}
+
+	// error handling if address space does not exist
+	if (address_space_found != true) {
 		std::cerr << "address out of range" << std::endl;
-		std::cout << "BIOS unable to handle address 0x: " 
-			<< std::hex << address << std::endl;
-		std::cout << "BIOS Address Range: 0x" << m_bios->ar.start
-			<< " - 0x" << m_bios->ar.end << std::endl;
+		std::cout << "BIOS unable to handle address 0x: " << std::hex << address << std::endl;
+		std::cout << "BIOS Address Range: 0x" << m_bios->ar.start << " - 0x" << m_bios->ar.end << std::endl;
+
 		// enter some error handling
 		exit(-1);
 		return 0;
+	} else {
+		return ld_val;
 	}
 }
 
 void BUS::store32(uint32_t address, uint32_t value) {
-	// if (address % 4 != 0) {
+	// if (!is_address_word_aligned()) {
 	// 	std::cout << "address 0x" << std::hex << address << " is not word aligned" << std::endl;
 	// 	exit(-1);
+	// }
+
+	// // loop through address mem spaces to determine which address space to write to
+	// bool address_space_found{false};
+	// std::set<MEM_SPACE *>::iterator m_iter;
+	// for (m_iter = mem_map.begin(); m_iter != mem_map.end(); m_iter ++) {
+	// 	MEM_SPACE * memory_space = *m_iter;
+	// 	if (memory_space->ar.is_addressable(address)) {
+	// 		memory_space->load32(address);
+	// 		address_space_found = true;
+	// 		break;
+	// 	}
 	// }
 
 	// uint32_t offset = mem_control.ar.local_address_offset(address);
@@ -68,4 +89,8 @@ void BUS::store32(uint32_t address, uint32_t value) {
 	// 	std::cout << "Unhandled memory write to MEM_CONTROL::0x" << std::hex << address << std::endl;
 	// 	// exit(-1);
 	// }
+}
+
+bool is_address_word_aligned(uint32_t address) {
+	return (address % 4 == 0);
 }

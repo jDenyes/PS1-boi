@@ -15,5 +15,5 @@ class BIOS : public MEM_SPACE {
 public:
 	BIOS(BUS * bus);
 	BIOS(const std::string &path, BUS * bus);
-	uint32_t load32(uint32_t offset);
+	// uint32_t load32(uint32_t offset);
 };

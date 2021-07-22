@@ -8,10 +8,10 @@
 
 BIOS::BIOS(BUS * bus) : BIOS("../bin/SCPH1001.BIN", bus) {
 	// default constructor 
-	std::cout << "default construtor invoked" << std::endl;
+	// std::cout << "default construtor invoked" << std::endl;
 }
 
-BIOS::BIOS(const std::string &path, BUS * bus) : MEM_SPACE(BIOS_START_ADDRESS, BIOS_SIZE, bus) {
+BIOS::BIOS(const std::string &path, BUS * bus) : MEM_SPACE("BIOS", BIOS_START_ADDRESS, BIOS_SIZE, bus) {
 	// std::cout << SIZE << " " << BIOS_SIZE << std::endl;
 	std::cout << "Initializing BIOS at start address: 0x" 
 		<< std::hex << BIOS_START_ADDRESS << std::endl;
@@ -28,10 +28,10 @@ BIOS::BIOS(const std::string &path, BUS * bus) : MEM_SPACE(BIOS_START_ADDRESS, B
 		exit(-1);
 	}
 	
-	// size_t len = strlen(data);
-	// std::cout << "len: " << len << " image_size: " << image_size << std::endl;
+	size_t len = strlen(data);
+	std::cout << "len: " << len << " image_size: " << image_size << std::endl;
 
-	if (image_size == strlen(data)) {
+	if (image_size) { // == strlen(data)) {
 		// std::cout << "seeking beginning of bios file" << std::endl;
 		file.seekg(0, std::ios::beg);
 		// std::vector<char> buffer(image_size);
@@ -46,16 +46,17 @@ BIOS::BIOS(const std::string &path, BUS * bus) : MEM_SPACE(BIOS_START_ADDRESS, B
 		std::cout << "bios and image do not match" << std::endl;
 		exit(-1);
 	}
+	std::cout << "Bios Imaging Complete\n" << std::endl;
 }
 
 // load 32-bit value from BIOS Image
-uint32_t BIOS::load32(uint32_t offset) {
-	uint32_t ld_val{0};
-	// // std::cout << "Bios Image at offset: 0x" << std::hex << offset << std::endl;
-	// for (uint32_t i = 0; i < sizeof(uint32_t) / sizeof(char); i++) {
-	// 	// std::cout << "\t" << std::hex << ((int)m_bios_image[offset + i] & 0xFF) << std::endl;
-	// 	ld_val |= (m_bios_image[offset + i] & 0xFF) << (i * 8);
-	// }
-	// std::cout << "load32 val: 0x" << std::hex << ld_val << std::endl;
-	return ld_val;
-}
+// uint32_t BIOS::load32(uint32_t offset) {
+// 	uint32_t ld_val{0};
+// 	// // std::cout << "Bios Image at offset: 0x" << std::hex << offset << std::endl;
+// 	// for (uint32_t i = 0; i < sizeof(uint32_t) / sizeof(char); i++) {
+// 	// 	// std::cout << "\t" << std::hex << ((int)m_bios_image[offset + i] & 0xFF) << std::endl;
+// 	// 	ld_val |= (m_bios_image[offset + i] & 0xFF) << (i * 8);
+// 	// }
+// 	// std::cout << "load32 val: 0x" << std::hex << ld_val << std::endl;
+// 	return ld_val;
+// }

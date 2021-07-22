@@ -2,6 +2,7 @@
 #include "bus.h"
 #include "BIOS.h"
 #include "op_code.h"
+#include <iostream>
 
 // #include "BIOS.h"
 // #include "bus.h"
@@ -10,12 +11,13 @@
 int main() {
 	CPU cpu;
 
-	// uint32_t i{0};
-	// while (true) {
-	// 	cpu.print_pc();
-	// 	cpu.fetch_next_instruction();
-	// 	i ++;
-	// }
+	uint32_t i{0};
+	while (true) {
+		cpu.print_pc();
+		cpu.fetch_next_instruction();
+		i ++;
+		std::cin.get();
+	}
 
 	
 	// std::cout << "at end of first 10 instructions" << std::endl;
