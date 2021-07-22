@@ -1,13 +1,49 @@
-CC = g++
-CFLAGS = -c -Wall
+NAME = emu
+CXX = g++
+RM = rm
+DEBUG = no
 
-src = $(wildcard *.cpp)
-obj = $(src:.cpp=.o)
-LDFLAGS = -I.
+LIB = -l m
+INCLUDE = -I include
 
-PsEmu: $(obj)
-	$(CC) -o $@ $^ 
+LDFLAGS = $(LIB)
 
-.PHONY: clean
+ifeq ($(DEBUG), no)
+LDFLAGS += -s
+endif
+
+SRC = main.cpp \
+	addr.cpp \
+	BIOS.cpp \
+	bus.cpp \
+	cpu.cpp \
+	op_code.cpp \
+
+DPD = $(SRC:.cpp=.dpd)
+OBJ     =   $(SRC:.cpp=.o)
+all : $(NAME)
+
+$(NAME): $(OBJ)
+	$(CXX) $(OBJ) -o $(NAME) $(LDFLAGS)
+
 clean:
-	rm -f $(obj) PsEmu
+	rm -f $(OBJ)
+	rm -f $(DPD)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean
+	$(MAKE) -C .
+
+%.dpd : %.cpp
+	$(CXX) -MM $(<) -o $(@) $(CXXFLAGS) -MT $(<:.cpp=.o)
+
+%.o : %.cpp
+	$(CXX) -c $(<) -o $(@) $(CXXFLAGS)
+
+.PHONY : all clean fclean re %.dpd %.o
+
+.SUFFIXES : .o.cpp .dpd.cpp
+
+include $(DPD)

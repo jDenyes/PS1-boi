@@ -1,0 +1,1 @@
+cpu.o: cpu.cpp cpu.h bus.h bios.h addr.h op_code.h
