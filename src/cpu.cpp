@@ -1,5 +1,8 @@
 #include "cpu.h"
+#include "bus.h"
+#include "BIOS.h"
 #include "op_code.h"
+
 #include <iostream>
 
 CPU::CPU() {

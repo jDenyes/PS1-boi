@@ -1,4 +1,6 @@
 #include "addr.h"
+#include "bus.h"
+
 #include <iostream>
 
 MEM_SPACE::MEM_SPACE(uint32_t s, uint32_t size, BUS * bus) : ar(s, size) {

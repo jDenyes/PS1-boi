@@ -1,4 +1,7 @@
 #include "BIOS.h"
+#include "addr.h"
+#include "bus.h"
+
 #include <fstream>
 #include <iostream>
 #include <cstring>

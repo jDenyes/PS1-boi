@@ -1,5 +1,5 @@
 NAME = emu
-CXX = g++
+CXX = clang++
 RM = rm
 DEBUG = no
 
@@ -13,9 +13,9 @@ LDFLAGS += -s
 endif
 
 SRC = main.cpp \
+	bus.cpp \
 	addr.cpp \
 	BIOS.cpp \
-	bus.cpp \
 	cpu.cpp \
 	op_code.cpp \
 

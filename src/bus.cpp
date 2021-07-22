@@ -1,4 +1,7 @@
+#include "BIOS.h"
 #include "bus.h"
+#include "addr.h"
+
 #include <iostream>
 
 BUS::BUS() { // : mem_control(0x1f801000, 36), ram(0x1f801060, 4), cache_control(0xfffe0130, 4) {

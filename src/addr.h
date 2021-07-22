@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include "bus.h"
 
+class BUS;
+
 class ADDR_RANGE {
 public:
 	ADDR_RANGE(uint32_t s, uint32_t size);

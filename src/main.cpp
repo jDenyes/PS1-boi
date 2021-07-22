@@ -1,7 +1,11 @@
 #include "cpu.h"
-#include "BIOS.h"
 #include "bus.h"
-#include <iostream>
+#include "BIOS.h"
+#include "op_code.h"
+
+// #include "BIOS.h"
+// #include "bus.h"
+// #include <iostream>
 
 int main() {
 	CPU cpu;

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "BIOS.h"
 #include <set>
+
+#include "BIOS.h"
 #include "addr.h"
 
 #define MEMORY_CONTROLLER_SIZE 0x24
@@ -12,6 +13,9 @@
 
 #define DWORD_SIZE 0x4
 
+class MEM_SPACE;
+class BIOS;
+
 class BUS {
 public:
 	BUS();
@@ -21,6 +25,6 @@ public:
 	MEM_SPACE * mem_control;
 	MEM_SPACE * ram_control;
 	MEM_SPACE * cache_control;
-	std::set<MEM_SPACE> mem_map;
+	std::set<MEM_SPACE *> mem_map;
 };
 

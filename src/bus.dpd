@@ -1,1 +1,1 @@
-bus.o: bus.cpp bus.h bios.h addr.h
+bus.o: bus.cpp BIOS.h addr.h bus.h

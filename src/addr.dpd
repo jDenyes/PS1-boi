@@ -1,1 +1,1 @@
-addr.o: addr.cpp addr.h
+addr.o: addr.cpp addr.h bus.h BIOS.h
