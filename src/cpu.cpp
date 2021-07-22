@@ -34,6 +34,7 @@ uint32_t CPU::load32(uint32_t address) {
 void CPU::reset_pc() {
 	r_pc = RESET_PC_VAL;
 	next_inst = INSTRUCTION(0);
+	status_register = 0x0;
 
 	for (int i = 0; i < 32; i ++) {
 		regs[i] = 0xdeadbeef;
@@ -62,24 +63,12 @@ void CPU::decode_and_execute(INSTRUCTION inst) {
 			break;
 		case COP_0:
 			op_cop0(inst);
+			break;
 		case SW:
 			op_sw(inst);
 			break;
 		case 0:
-			switch (inst.get_0_op()) {
-				case SLL:
-					op_sll(inst);
-					break;
-				case OR:
-					op_or(inst);
-					break;
-			default:
-				op_code_handled = false;
-				std::cout << "0 : 0x" << std::hex << inst.get_0_op() << " opcode not handled" 
-					<< std::endl;
-				exit(-1);
-				break;
-			}
+			op_0(inst);
 			break;
 	default:
 		op_code_handled = false;

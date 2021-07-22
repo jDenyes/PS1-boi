@@ -1,12 +1,5 @@
 #include "cpu.h"
-#include "bus.h"
-#include "BIOS.h"
-#include "op_code.h"
 #include <iostream>
-
-// #include "BIOS.h"
-// #include "bus.h"
-// #include <iostream>
 
 int main() {
 	CPU cpu;
@@ -16,7 +9,7 @@ int main() {
 		cpu.print_pc();
 		cpu.fetch_next_instruction();
 		i ++;
-		std::cin.get();
+		// std::cin.get();
 	}
 
 	

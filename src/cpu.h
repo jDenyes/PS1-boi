@@ -51,17 +51,17 @@ private:
 	INSTRUCTION next_inst;
 
 	// CPU Operations
-
 	void op_j(INSTRUCTION inst);
 	void op_addiu(INSTRUCTION inst);
 	void op_ori(INSTRUCTION inst);
 	void op_lui(INSTRUCTION inst);
-	void op_or(INSTRUCTION inst);
 	void op_sw(INSTRUCTION inst);
 	void op_cop0(INSTRUCTION inst);
 
 	// Op Code 0
+	void op_0(INSTRUCTION inst);
 	void op_sll(INSTRUCTION inst);
+	void op_or(INSTRUCTION inst);
 
 	// COP_0 Op
 	void op_cop_mtc0(INSTRUCTION inst);
