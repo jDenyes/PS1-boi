@@ -44,26 +44,31 @@ void CPU::decode_and_execute(INSTRUCTION inst) {
 	bool op_code_handled = true;
 	// INSTRUCTION decoded_inst(inst);
 
-	switch(inst.get_op()) {
-		case LUI:
-			op_lui(inst);
-			break;
-		case ORI:
-			op_ori(inst);
-			break;
-		case SW:
-			op_sw(inst);
+	switch (inst.get_op()) {
+		case J:
+			op_j(inst);
 			break;
 		case ADDIU:
 			op_addiu(inst);
 			break;
-		case J:
-			op_j(inst);
+		case ORI:
+			op_ori(inst);
+			break;
+		case LUI:
+			op_lui(inst);
+			break;
+		case COP_0:
+			op_cop0(inst);
+		case SW:
+			op_sw(inst);
 			break;
 		case 0:
-			switch(inst.get_0_op()) {
+			switch (inst.get_0_op()) {
 				case SLL:
 					op_sll(inst);
+					break;
+				case OR:
+					op_or(inst);
 					break;
 			default:
 				op_code_handled = false;
@@ -172,3 +177,5 @@ uint32_t INSTRUCTION::get_0_op() {
 uint32_t INSTRUCTION::get_j_address() {
 	return m_inst & 0x3FFFFFF;  
 }
+
+

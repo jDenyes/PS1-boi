@@ -1,6 +1,12 @@
 #include "addr.h"
 #include <iostream>
 
+MEM_SPACE::MEM_SPACE(uint32_t s, uint32_t size, BUS * bus) : ar(s, size) {
+	data = new char[size];
+	m_bus = bus;
+	m_bus->mem_map.insert(this);
+}
+
 ADDR_RANGE::ADDR_RANGE(uint32_t s, uint32_t size) {
 	start = s;
 	end = size + s;
@@ -24,3 +30,4 @@ uint32_t ADDR_RANGE::local_address_offset(uint32_t address) {
 		return 0xFFFFFFFF;
 	}
 }
+

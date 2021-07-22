@@ -5,12 +5,15 @@
 
 int main() {
 	CPU cpu;
-	uint32_t i{0};
-	while (true) {
-		cpu.print_pc();
-		cpu.fetch_next_instruction();
-		i ++;
-	}
+
+	// uint32_t i{0};
+	// while (true) {
+	// 	cpu.print_pc();
+	// 	cpu.fetch_next_instruction();
+	// 	i ++;
+	// }
+
+	
 	// std::cout << "at end of first 10 instructions" << std::endl;
 	// BIOS bios("../bin/SCPH1001.BIN");
 	// BUS bus;
