@@ -6,6 +6,7 @@ int main() {
 
 	uint32_t i{0};
 	while (true) {
+		std::cout << "Instruction " << std::dec << i << std::endl;
 		cpu.print_pc();
 		cpu.fetch_next_instruction();
 		i ++;

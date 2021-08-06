@@ -22,6 +22,7 @@ void CPU::op_lui(INSTRUCTION inst) {
 	uint32_t i = inst.get_i();
 	uint32_t t = inst.get_t();
 	regs[t] = i << 16;
+	std::cout << "lui $" << std::dec << t << ", 0x" << std::hex << i << std::endl;
 }
 
 void CPU::op_ori(INSTRUCTION inst) {
@@ -29,6 +30,7 @@ void CPU::op_ori(INSTRUCTION inst) {
 	uint32_t i = inst.get_i();
 	uint32_t t = inst.get_t();
 	regs[t] |= i;
+	std::cout << "ori $" << std::dec << t << ", 0x" << std::hex << i << std::endl;
 }
 
 // sw$ target(t), address(i)($src)
@@ -37,6 +39,7 @@ void CPU::op_sw(INSTRUCTION inst) {
 	int32_t i = inst.get_se_i();
 	uint32_t t = inst.get_t();
 	uint32_t s = inst.get_s();
+	std::cout << "sw $" << std::dec << t << ", 0x" << std::hex << i << "($" << std::dec << s << ")" << std::endl;
 	m_bus->store32(regs[s] + i, regs[t]);
 }
 
@@ -46,14 +49,28 @@ void CPU::op_sll(INSTRUCTION inst) {
 	uint32_t t = inst.get_t();
 	uint32_t d = inst.get_d();
 	regs[d] = regs[t] << i;
+	std::cout << "sll $" << std::dec << d << ", $" << t << ", 0x" << std::hex << i << std::endl;
+}
+
+void CPU::op_addi(INSTRUCTION inst) {
+	std::cout << "0x" << std::hex << inst.get_op() << ": addi inst" << std::endl;
+	int32_t i = inst.get_se_i();
+	uint32_t t = inst.get_t();
+	uint32_t s = inst.get_s();
+
+	// s = (int32_t)regs[s];
+
+	regs[t] = uint32_t((int32_t)regs[s] + i);
+	std::cout << "addi $" << std::dec << t << ", $" << std::dec << s << ", 0x" << std::hex << i << std::endl;
 }
 
 void CPU::op_addiu(INSTRUCTION inst) {
 	std::cout << "0x" << std::hex << inst.get_op() << ": addiu inst" << std::endl;
-	uint32_t i = inst.get_se_i();
+	int32_t i = inst.get_se_i();
 	uint32_t t = inst.get_t();
 	uint32_t s = inst.get_s();
 	regs[t] = regs[s] + i;
+	std::cout << "addiu $" << t << ", $" << s << ", 0x" << std::hex << i << std::endl;
 }
 
 void CPU::op_j(INSTRUCTION inst) {
@@ -61,6 +78,7 @@ void CPU::op_j(INSTRUCTION inst) {
 	uint32_t j = inst.get_j_address();
 	std::cout << "jumping to address " << std::hex << "0x" << ((r_pc & 0xF0000000) | (j << 2)) << std::endl;
 	r_pc = (r_pc & 0xF0000000) | (j << 2);
+	std::cout << "j 0x" << std::hex << j << std::endl;
 }
 
 void CPU::op_or(INSTRUCTION inst) {
@@ -69,6 +87,7 @@ void CPU::op_or(INSTRUCTION inst) {
 	uint32_t s = inst.get_s();
 	uint32_t t = inst.get_t();
 	regs[d] = regs[s] | regs[t];
+	std::cout << "or $" << d << ", $" << s << ", $" << t << std::endl;
 }
 
 void CPU::op_cop0(INSTRUCTION inst) {
@@ -105,4 +124,16 @@ void CPU::op_cop_mtc0(INSTRUCTION inst) {
 	}
 }
 
-
+void CPU::op_bne(INSTRUCTION inst) {
+	std::cout << "0x" << std::hex << inst.get_op() << ": bne inst" << std::endl;
+	int32_t i = inst.get_se_i();
+	std::cout << "immediate value " << i << std::endl;
+	uint32_t s = inst.get_s();
+	uint32_t t = inst.get_t();
+	
+	// std::cout << "compariing " << s << " and " << t << " for equality" << std::endl;
+	if (regs[s] != regs[t]) {
+		// std::cout << "Adding offset " << std::dec << i << std::endl;
+		branch(i);
+	}
+}

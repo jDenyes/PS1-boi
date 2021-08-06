@@ -21,7 +21,7 @@ BUS::BUS() {
 
 uint32_t BUS::load32(uint32_t address) {
 	uint32_t ld_val{0};
-
+	
 	// ensure address is word aligned
 	if (!is_address_word_aligned(address)) {
 		std::cout << "address 0x" << std::hex << address << " is not word aligned" << std::endl;

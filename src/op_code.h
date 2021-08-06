@@ -4,6 +4,7 @@
 // op_code b[31:26] 
 #define J			0x2
 #define BNE		0x5
+#define ADDI	0x8
 #define ADDIU 0x9
 #define ORI 	0xD
 #define LUI 	0xF

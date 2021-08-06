@@ -3,6 +3,7 @@
 #include "BIOS.h"
 #include "op_code.h"
 
+#include <bitset>
 #include <iostream>
 
 CPU::CPU() {
@@ -44,13 +45,18 @@ void CPU::reset_pc() {
 
 void CPU::decode_and_execute(INSTRUCTION inst) {
 	std::cout << "opcode: 0x" << std::hex << inst.get_op() << std::endl; 
-
 	bool op_code_handled = true;
 	// INSTRUCTION decoded_inst(inst);
 
 	switch (inst.get_op()) {
 		case J:
 			op_j(inst);
+			break;
+		case BNE:
+			op_bne(inst);
+			break;
+		case ADDI:
+			op_addi(inst);
 			break;
 		case ADDIU:
 			op_addiu(inst);
@@ -81,6 +87,15 @@ void CPU::decode_and_execute(INSTRUCTION inst) {
 	}
 }
 
+void CPU::branch(int32_t offset) {
+	offset = offset << 2;
+
+	std::cout << "Adding offset " << std::dec << offset << std::endl;
+
+	r_pc += offset;
+	r_pc -= 4;
+}
+
 void CPU::print_pc() {
 	std::cout << "\nCurrent PC: 0x" << std::hex << r_pc << std::endl;
 }
@@ -109,6 +124,9 @@ INSTRUCTION::INSTRUCTION(uint32_t inst) : m_inst(inst) {
 // opcode	| 	s		|	t		|	i						|
 // 1010 11	| 	00 001  | 	0 1000	|	0001 0000 0001 0000		|
 
+// 0xad400010
+// 0b 1010 11 01 0100 0000 0000 0000 0001 0000
+
 // b: 31 - 26
 uint32_t INSTRUCTION::get_op() {
 	return (m_inst >> 26) & 0x3F;
@@ -131,8 +149,11 @@ uint32_t INSTRUCTION::get_i() {
 
 // c-style casts automatically sign extend
 // b: 15 - 0
-uint32_t INSTRUCTION::get_se_i() {
-	return (int32_t) (m_inst & 0xFFFF); 
+int16_t INSTRUCTION::get_se_i() {
+	int16_t signed_i = (m_inst & 0xFFFF);
+	std::cout << "unsigned number: " << std::dec << (m_inst & 0xFFFF) << std::endl;
+	std::cout << "sign extended number 32 bits: " << std::dec << signed_i << std::endl;
+	return signed_i;
 }
 
 // shift operations, 0x0 opcode
